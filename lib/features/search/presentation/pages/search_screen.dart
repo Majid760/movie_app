@@ -47,6 +47,7 @@ class SearchScreen extends StatelessWidget {
                     ),
                     child: SearchField(
                       onChanged: (value) {
+                        if (value.isEmpty) return;
                         AppUtils.instance.debounce(
                           milliseconds: 1200,
                           () => cubit.onSearch(
@@ -68,11 +69,22 @@ class SearchScreen extends StatelessWidget {
                         SizedBox(
                           height: 30,
                         ),
-                        Text(
-                          AppStrings.topResults,
-                          style: AppTypography.labelMedium.copyWith(
-                            color: AppColors.textPrimary,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              AppStrings.topResults,
+                              style: AppTypography.labelMedium.copyWith(
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            Text(
+                              '',
+                              // ' ${cubit.pagingController.itemList?.length ?? ''}',
+                              style: AppTypography.labelMedium.copyWith(
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 10,
@@ -106,20 +118,20 @@ class SearchScreen extends StatelessWidget {
                       ),
                       noItemsFoundIndicatorBuilder: (_) => Center(
                         child: Text(
-                          'No movies found',
-                          style: AppTypography.bodyLarge,
+                          AppStrings.noMovieFound,
+                          style: AppTypography.titleLarge.copyWith(color: AppColors.textPrimary),
                         ),
                       ),
                       firstPageErrorIndicatorBuilder: (_) => Center(
                         child: Text(
-                          'Error loading movies',
-                          style: AppTypography.bodyLarge,
+                          AppStrings.errorLoadingMovie,
+                          style: AppTypography.titleLarge.copyWith(color: AppColors.error),
                         ),
                       ),
                       newPageErrorIndicatorBuilder: (_) => Center(
                         child: Text(
-                          'Error loading more movies',
-                          style: AppTypography.bodyLarge,
+                          AppStrings.errorLoadingMoreMovie,
+                          style: AppTypography.titleLarge.copyWith(color: AppColors.error),
                         ),
                       ),
                       itemBuilder: (context, movie, index) => Padding(
