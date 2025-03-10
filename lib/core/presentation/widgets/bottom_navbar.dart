@@ -59,23 +59,17 @@ class AppNavBar extends StatelessWidget {
 }
 
 class AppNavBarItem extends BottomNavigationBarItem {
-  /// Icon when the item is inactive.
   final Widget navbarIcon;
 
-  /// Icon when the item is active.
   final Widget? active;
 
-  /// Background color for the item.
   final Color? backgroundColor;
 
-  /// Label for the item.
   final String label;
 
-  /// Tooltip for accessibility.
   @override
   final String? tooltip;
 
-  /// Constructor
   AppNavBarItem({
     required this.navbarIcon,
     this.backgroundColor,

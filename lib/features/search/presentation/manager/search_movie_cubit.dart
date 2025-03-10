@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:movie_app_assessment/features/movies/data/models/movie_model.dart';
-import 'package:movie_app_assessment/features/movies/domain/use_cases/fetch_search_movie_usecase.dart';
+import 'package:movie_app_assessment/features/search/domain/use_cases/fetch_search_movie_usecase.dart';
 import 'package:movie_app_assessment/features/search/presentation/manager/search_movie_state.dart';
 
 import '../../../../core/di/service_locator.dart';

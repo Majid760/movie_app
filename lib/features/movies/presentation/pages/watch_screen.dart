@@ -58,7 +58,7 @@ class _WatchScreenState extends State<WatchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.mist,
+      backgroundColor: AppColors.lightMist,
       appBar: AppBar(
         leadingWidth: 100,
         backgroundColor: AppColors.white,
@@ -66,10 +66,10 @@ class _WatchScreenState extends State<WatchScreen> {
           padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
           child: Text(AppStrings.watch, style: AppTypography.titleMedium),
         ),
-        elevation: 1,
+        elevation: 2,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.only(right: 12),
             child: IconButton(
               icon: const Icon(Icons.search),
               onPressed: () {
@@ -93,7 +93,7 @@ class _WatchScreenState extends State<WatchScreen> {
           child: PagedListView<int, MovieModel>(
             pagingController: _pagingController,
             physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
             builderDelegate: PagedChildBuilderDelegate<MovieModel>(
               // firstPageProgressIndicatorBuilder: (_) => WatchScreenShimmer(),
               firstPageProgressIndicatorBuilder: (_) => Center(

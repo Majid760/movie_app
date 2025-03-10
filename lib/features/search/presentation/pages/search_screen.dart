@@ -46,6 +46,7 @@ class SearchScreen extends StatelessWidget {
                       ),
                     ),
                     child: SearchField(
+                      autoFocus: true,
                       onChanged: (value) {
                         if (value.isEmpty) return;
                         AppUtils.instance.debounce(
@@ -66,9 +67,7 @@ class SearchScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 30,
-                        ),
+                        SizedBox(height: 30),
                         Row(
                           children: [
                             Text(
@@ -86,14 +85,8 @@ class SearchScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Divider(
-                          height: 0,
-                          thickness: 1,
-                          color: Color(0xFFEFEFEF),
-                        ),
+                        SizedBox(height: 10),
+                        Divider(height: 0, thickness: 1, color: Colors.white),
                       ],
                     ),
                   ),

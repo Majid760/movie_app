@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color deepTwilight = Color(0xFF2E2739);
   static const Color mist = Color(0xFFF6F6FA);
+  static const Color lightMist = Color(0xFFF2F2F6);
+  static const Color darkMist = Color(0xFFDBDBDF);
   static const Color ashLavender = Color(0xFF827D88);
   static const Color skyBlue = Color(0xFF61C3F2);
   static const Color gray = Color(0xFFDBDBDF);

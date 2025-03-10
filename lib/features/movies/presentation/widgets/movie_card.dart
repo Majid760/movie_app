@@ -24,22 +24,44 @@ class MovieCard extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.black,
+          color: Colors.red,
         ),
         child: Stack(
           fit: StackFit.expand,
+          alignment: Alignment.bottomCenter,
           children: [
             // Background Image
             CachedImageWidget(imageUrl: imageUrl, fit: BoxFit.cover),
+
             // Title
             Positioned(
-              left: 20,
-              bottom: 20,
-              child: Text(
-                title,
-                style: AppTypography.titleLarge.copyWith(color: Colors.white),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(20, 27, 20, 20),
+                height: 70,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color.fromRGBO(0, 0, 0, 0), // transparent
+                      Color.fromRGBO(0, 0, 0, 1),
+                    ],
+                    // transform: GradientRotation(0.5 * 3.14),
+                  ),
+                ),
+                child: Text(
+                  title,
+                  style: AppTypography.titleLarge.copyWith(color: Colors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
 

@@ -90,6 +90,24 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ],
                       ),
                     ),
+                    Container(
+                        padding: const EdgeInsets.fromLTRB(20, 27, 20, 20),
+                        height: 359,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color.fromRGBO(0, 0, 0, 0), // transparent
+                              Color.fromRGBO(0, 0, 0, .8),
+                            ],
+                            // transform: GradientRotation(0.5 * 3.14),
+                          ),
+                        )),
                     Positioned(
                         bottom: 34,
                         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -152,46 +170,46 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(40, 27, 40, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Genres
-                      Text(
-                        AppStrings.genres,
-                        style: AppTypography.titleMedium.copyWith(color: AppColors.textPrimary),
-                      ),
-                      SizedBox(height: 8),
-                      SizedBox(
-                        height: 40,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: movieDetail?.genres.length ?? 0,
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (context, index) {
-                            final genre = movieDetail?.genres[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 5.0),
-                              child: _buildGenreChip(genre?.name ?? '', genreColors[index % genreColors.length]),
-                            );
-                          },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Genres
+                        Text(
+                          AppStrings.genres,
+                          style: AppTypography.titleMedium.copyWith(color: AppColors.textPrimary),
                         ),
-                      ),
-                      SizedBox(height: 22),
-                      Divider(color: Colors.black.withValues(alpha: .05), height: 1),
-                      SizedBox(height: 15),
+                        SizedBox(height: 8),
+                        SizedBox(
+                          height: 40,
+                          child: ListView.separated(
+                            separatorBuilder: (_, __) => SizedBox(width: 5),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: movieDetail?.genres.length ?? 0,
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) {
+                              final genre = movieDetail?.genres[index];
+                              return _buildGenreChip(genre?.name ?? '', genreColors[index % genreColors.length]);
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 22),
+                        Divider(color: Colors.black.withValues(alpha: .05), height: 1),
+                        SizedBox(height: 15),
 
-                      // Overview
-                      Text(
-                        AppStrings.overView,
-                        style: AppTypography.titleMedium.copyWith(color: AppColors.textPrimary),
-                      ),
-                      SizedBox(height: 8),
-                      Text(movieDetail?.overview ?? '',
-                          style: AppTypography.bodySmall.copyWith(
-                            color: Color(0xFF8F8F8F),
-                            height: 1.6,
-                          )),
-                    ],
+                        // Overview
+                        Text(
+                          AppStrings.overView,
+                          style: AppTypography.titleMedium.copyWith(color: AppColors.textPrimary),
+                        ),
+                        SizedBox(height: 8),
+                        Text(movieDetail?.overview ?? '',
+                            style: AppTypography.bodySmall.copyWith(
+                              color: Color(0xFF8F8F8F),
+                              height: 1.6,
+                            )),
+                      ],
+                    ),
                   ),
                 ),
               ],

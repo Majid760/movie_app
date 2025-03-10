@@ -31,4 +31,11 @@ class AppStrings {
   // Buttons
   static const String bookNow = "Book Now";
   static const String cancel = "Cancel";
+
+  // search psgae
+  static const String noMovieFound = 'No movies found!';
+  static const String errorLoadingMovie = 'Error loading movies!';
+  static const String errorLoadingMoreMovie = 'Error loading more movies';
+  // text field hint
+  static const String searchHint = 'TV shows, movies and more';
 }

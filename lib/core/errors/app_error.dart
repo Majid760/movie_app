@@ -12,14 +12,38 @@ abstract class Failure {
 
 class FirebaseAuthFailure extends Failure {
   const FirebaseAuthFailure(super.message);
+
+  @override
+  String toString() {
+    return 'FirebaseAuthFailure: An error occurred while trying to authenticate the user';
+  }
 }
 
 class ServerFailure extends Failure {
   const ServerFailure(super.message);
+
+  @override
+  String toString() {
+    return 'ServerFailure: An error occurred while trying to communicate with the server';
+  }
+}
+
+class NetworkFailure extends Failure {
+  const NetworkFailure(super.message);
+
+  @override
+  String toString() {
+    return 'NetworkFailure: No internet connection!';
+  }
 }
 
 class CacheFailure extends Failure {
   const CacheFailure(super.message);
+
+  @override
+  String toString() {
+    return 'CacheFailure: An error occurred while trying to cache data';
+  }
 }
 
 class ApiException implements Exception {

@@ -5,8 +5,8 @@ import '../../features/movies/data/data_sources/remote_source.dart';
 import '../../features/movies/data/repositories/movie_repository_imp.dart';
 import '../../features/movies/domain/use_cases/fetch_movie_detail_usecase.dart';
 import '../../features/movies/domain/use_cases/fetch_movie_trailer_usecase.dart';
-import '../../features/movies/domain/use_cases/fetch_search_movie_usecase.dart';
 import '../../features/movies/domain/use_cases/fetch_upcoming_movies_usecase.dart';
+import '../../features/search/domain/use_cases/fetch_search_movie_usecase.dart';
 import '../network/network_client.dart';
 import '../network/network_client_service.dart';
 

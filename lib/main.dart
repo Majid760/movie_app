@@ -13,6 +13,7 @@ import 'features/movies/presentation/manager/movie_detail_cubit.dart';
 import 'features/search/presentation/manager/search_movie_cubit.dart';
 
 Future<void> main() async {
+  // debugPaintSizeEnabled = true;
   // Initialize service locator
   await ServicesLocator.shared.init();
 
@@ -55,18 +56,19 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp.router(
               routerConfig: AppRouter.router,
+              debugShowCheckedModeBanner: false,
             )));
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class AppBottomNavigationBar extends StatefulWidget {
+  const AppBottomNavigationBar({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<AppBottomNavigationBar> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<AppBottomNavigationBar> {
   int _tabIndex = 1;
 
   void _onTabTapped(int index) {

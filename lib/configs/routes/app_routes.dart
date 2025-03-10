@@ -14,18 +14,18 @@ import '../../features/movies/presentation/pages/watch_trailer.dart';
 
 class AppRouter {
   static final router = GoRouter(
-    initialLocation: '/watch',
-    debugLogDiagnostics: true,
+    initialLocation: AppRoutes.watchPath,
+    // debugLogDiagnostics: true,
     routes: [
       ShellRoute(
+        // support multiple navigation stacks
         builder: (context, state, child) {
           // return AppNavbar(child: child);
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => HomeCubit(), lazy: false),
-              // BlocProvider(create: (context) => HomeCubit(), lazy: false),
             ],
-            child: HomeScreen(),
+            child: AppBottomNavigationBar(),
           );
           // return child;
         },
@@ -44,6 +44,26 @@ class AppRouter {
         ],
       ),
 
+      // Search Route with slide animation
+      GoRoute(
+          path: AppRoutes.searchPath,
+          name: AppRoutes.search,
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: SearchScreen(),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return ScaleTransition(
+                  scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                  ),
+                  child: child,
+                );
+              },
+            );
+          }),
+
+      // movie detail route
       GoRoute(
           path: AppRoutes.movieDetailPath,
           name: AppRoutes.movieDetail,
@@ -63,6 +83,7 @@ class AppRouter {
             );
           }),
 
+      // movie watch trailer route
       GoRoute(
           path: AppRoutes.watchTrailerPath,
           name: AppRoutes.watchTrailer,
@@ -71,25 +92,6 @@ class AppRouter {
             return CustomTransitionPage(
               key: state.pageKey,
               child: VideoPlayerScreen(videoKey: videoKey),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return ScaleTransition(
-                  scale: Tween<double>(begin: 0.8, end: 1.0).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-                  child: child,
-                );
-              },
-            );
-          }),
-
-      // Search Route with slide animation
-      GoRoute(
-          path: AppRoutes.searchPath,
-          name: AppRoutes.search,
-          pageBuilder: (context, state) {
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: SearchScreen(),
               transitionsBuilder: (context, animation, secondaryAnimation, child) {
                 return ScaleTransition(
                   scale: Tween<double>(begin: 0.8, end: 1.0).animate(
@@ -150,7 +152,13 @@ class AppRouter {
 
 // Helper extension for easier navigation
 extension RouterExtension on BuildContext {
-  void pushSearch() => GoRouter.of(this).pushNamed('search');
+  void pushSearch() {
+    try {
+      GoRouter.of(this).go(AppRoutes.searchPath);
+    } catch (e) {
+      print('error while searching $e');
+    }
+  }
 
   void pushCategoryScreen() => GoRouter.of(this).pushNamed('category');
 
