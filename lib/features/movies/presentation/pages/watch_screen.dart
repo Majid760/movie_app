@@ -14,49 +14,13 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/app_ui_utils.dart';
 import '../../../../core/utils/enums/app_enums.dart';
 
-class WatchScreen extends StatefulWidget {
+class WatchScreen extends StatelessWidget {
   const WatchScreen({super.key});
 
   @override
-  State<WatchScreen> createState() => _WatchScreenState();
-}
-
-class _WatchScreenState extends State<WatchScreen> {
-  final PagingController<int, MovieModel> _pagingController = PagingController(firstPageKey: 1);
-
-  @override
-  void initState() {
-    super.initState();
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage();
-    });
-  }
-
-  Future<void> _fetchPage() async {
-    try {
-      final cubit = context.read<HomeCubit>();
-      await cubit.fetchUpComingMovies();
-
-      final state = cubit.state;
-
-      if (state.hasReachedMax) {
-        _pagingController.appendLastPage(state.movieList);
-      } else {
-        _pagingController.appendPage(state.movieList, state.currentPage + 1);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
-
-  @override
-  void dispose() {
-    _pagingController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final cubit = context.read<HomeCubit>();
+
     return Scaffold(
       backgroundColor: AppColors.lightMist,
       appBar: AppBar(
@@ -87,11 +51,10 @@ class _WatchScreenState extends State<WatchScreen> {
         },
         child: RefreshIndicator(
           onRefresh: () {
-            context.read<HomeCubit>().resetState();
-            return Future.sync(() => _pagingController.refresh());
+            return Future.sync(() => cubit.pagingController.refresh());
           },
           child: PagedListView<int, MovieModel>(
-            pagingController: _pagingController,
+            pagingController: cubit.pagingController,
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
             builderDelegate: PagedChildBuilderDelegate<MovieModel>(
@@ -102,6 +65,18 @@ class _WatchScreenState extends State<WatchScreen> {
                   child: CupertinoActivityIndicator(),
                 ),
               ),
+              firstPageErrorIndicatorBuilder: (_) => Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: CupertinoActivityIndicator(),
+                ),
+              ),
+              newPageErrorIndicatorBuilder: (_) => Center(
+                child: Text(
+                  AppStrings.errorLoadingMoreMovie,
+                  style: AppTypography.titleLarge.copyWith(color: AppColors.error),
+                ),
+              ),
               newPageProgressIndicatorBuilder: (_) => const Center(
                 child: Padding(
                   padding: EdgeInsets.all(16),
@@ -110,8 +85,8 @@ class _WatchScreenState extends State<WatchScreen> {
               ),
               noItemsFoundIndicatorBuilder: (_) => Center(
                 child: Text(
-                  'No movies found',
-                  style: AppTypography.bodyLarge,
+                  AppStrings.noMovieFound,
+                  style: AppTypography.titleLarge.copyWith(color: AppColors.textPrimary),
                 ),
               ),
               itemBuilder: (context, movie, index) => Padding(
