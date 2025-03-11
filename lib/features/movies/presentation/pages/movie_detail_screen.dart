@@ -2,17 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_assessment/configs/routes/app_routes.dart';
-import 'package:movie_app_assessment/core/presentation/widgets/app_button.dart';
 import 'package:movie_app_assessment/core/presentation/widgets/network_image_widget.dart';
 import 'package:movie_app_assessment/core/theme/app_colors.dart';
 import 'package:movie_app_assessment/core/theme/app_typography.dart';
 import 'package:movie_app_assessment/core/utils/app_ui_utils.dart';
 import 'package:movie_app_assessment/core/utils/extensions/string_extension.dart';
 import 'package:movie_app_assessment/features/movies/presentation/manager/movie_detail_cubit.dart';
-import 'package:movie_app_assessment/features/seat_booking/presentation/pages/seat_booking_screen.dart';
 
+import '../../../../core/presentation/widgets/app_button.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_utils.dart';
 import '../../../../core/utils/enums/app_enums.dart';
+import '../../../seat_booking/presentation/pages/seat_booking_screen.dart';
 import '../manager/movie_detail_state.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -65,29 +66,44 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   alignment: Alignment.bottomCenter,
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.60,
+                      height: AppUtils.instance.getScreenHeight(context) * 0.60,
                       width: double.infinity,
                       child: CachedImageWidget(imageUrl: movieDetail?.posterPath ?? '', fit: BoxFit.cover),
                     ),
                     // Back Button
                     Positioned(
-                      top: MediaQuery.of(context).padding.top,
                       left: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
-                            onPressed: () => Navigator.pop(context),
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(12, 59, 0, 75),
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF000000), // Black (#000000)
+                              Color(0x00000000), // Transparent (#00000000)
+                            ],
+                            begin: Alignment.topCenter, // Gradient starts from the top
+                            end: Alignment.bottomCenter, // Gradient fades to the bottom
                           ),
-                          SizedBox(width: 8),
-                          Text(
-                            AppStrings.watch,
-                            style: AppTypography.titleMedium.copyWith(
-                              color: Colors.white,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white),
+                              onPressed: () => Navigator.pop(context),
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 8),
+                            Text(
+                              AppStrings.watch,
+                              style: AppTypography.titleMedium.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -168,6 +184,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ]))
                   ],
                 ),
+
+                // generate movie details sections
                 Padding(
                   padding: const EdgeInsets.fromLTRB(40, 27, 40, 0),
                   child: SingleChildScrollView(
@@ -196,7 +214,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         SizedBox(height: 22),
                         Divider(color: Colors.black.withValues(alpha: .05), height: 1),
                         SizedBox(height: 15),
-
                         // Overview
                         Text(
                           AppStrings.overView,
