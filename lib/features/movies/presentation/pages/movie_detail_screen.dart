@@ -56,19 +56,19 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           builder: (context, state) {
             final movieDetail = state.movieDetail;
             final inTheaters = 'In Theaters ${movieDetail?.releaseDate.monthName} ${movieDetail?.releaseDate ?? ''}';
-            if (state.status == MovieDetailStatus.loading) {
-              return Center(child: CupertinoActivityIndicator());
-            }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   alignment: Alignment.bottomCenter,
                   children: [
-                    SizedBox(
-                      height: AppUtils.instance.getScreenHeight(context) * 0.60,
-                      width: double.infinity,
-                      child: CachedImageWidget(imageUrl: movieDetail?.posterPath ?? '', fit: BoxFit.cover),
+                    Hero(
+                      tag: widget.movieId,
+                      child: SizedBox(
+                        height: AppUtils.instance.getScreenHeight(context) * 0.60,
+                        width: double.infinity,
+                        child: CachedImageWidget(imageUrl: movieDetail?.posterPath ?? '', fit: BoxFit.cover),
+                      ),
                     ),
                     // Back Button
                     Positioned(
@@ -200,16 +200,18 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         SizedBox(height: 8),
                         SizedBox(
                           height: 40,
-                          child: ListView.separated(
-                            separatorBuilder: (_, __) => SizedBox(width: 5),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: movieDetail?.genres.length ?? 0,
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (context, index) {
-                              final genre = movieDetail?.genres[index];
-                              return _buildGenreChip(genre?.name ?? '', genreColors[index % genreColors.length]);
-                            },
-                          ),
+                          child: (state.status == MovieDetailStatus.loading)
+                              ? Center(child: CupertinoActivityIndicator())
+                              : ListView.separated(
+                                  separatorBuilder: (_, __) => SizedBox(width: 5),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: movieDetail?.genres.length ?? 0,
+                                  padding: EdgeInsets.zero,
+                                  itemBuilder: (context, index) {
+                                    final genre = movieDetail?.genres[index];
+                                    return _buildGenreChip(genre?.name ?? '', genreColors[index % genreColors.length]);
+                                  },
+                                ),
                         ),
                         SizedBox(height: 22),
                         Divider(color: Colors.black.withValues(alpha: .05), height: 1),

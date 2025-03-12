@@ -52,4 +52,8 @@ class MovieDetailCubit extends Cubit<MovieDetailState> {
   void reset() {
     emit(const MovieDetailState());
   }
+
+  void setMovieDetail(MovieDetailModel movieDetail) {
+    emit(state.copyWith(movieDetail: movieDetail));
+  }
 }

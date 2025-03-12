@@ -1,6 +1,8 @@
 import 'package:movie_app_assessment/core/network/network_config.dart';
 import 'package:movie_app_assessment/features/movies/domain/entities/movie_detail_entity.dart';
 
+import 'movie_model.dart';
+
 class MovieDetailModel extends MovieDetailEntity {
   MovieDetailModel({
     required super.adult,
@@ -129,5 +131,35 @@ class MovieDetailModel extends MovieDetailEntity {
       "vote_average": voteAverage,
       "vote_count": voteCount,
     };
+  }
+
+  static MovieDetailModel fromMovieModel(MovieModel model) {
+    return MovieDetailModel(
+      adult: model.adult,
+      backdropPath: model.backdropPath,
+      budget: 0,
+      genres: model.genreIds.map((id) => GenreEntity(id: id, name: '')).toList(),
+      homepage: '',
+      id: model.id,
+      imdbId: '',
+      originCountry: [],
+      originalLanguage: model.originalLanguage,
+      originalTitle: model.originalTitle,
+      overview: model.overview,
+      popularity: model.popularity,
+      posterPath: model.posterPath,
+      productionCompanies: [],
+      productionCountries: [],
+      releaseDate: model.releaseDate,
+      revenue: 0,
+      runtime: 0,
+      spokenLanguages: [],
+      status: '',
+      tagline: '',
+      title: model.title,
+      video: model.video,
+      voteAverage: model.voteAverage,
+      voteCount: model.voteCount,
+    );
   }
 }

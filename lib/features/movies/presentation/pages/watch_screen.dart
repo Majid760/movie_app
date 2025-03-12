@@ -8,11 +8,13 @@ import 'package:movie_app_assessment/core/utils/app_strings.dart';
 import 'package:movie_app_assessment/features/movies/data/models/movie_model.dart';
 import 'package:movie_app_assessment/features/movies/presentation/manager/home_cubit.dart';
 import 'package:movie_app_assessment/features/movies/presentation/manager/home_state.dart';
+import 'package:movie_app_assessment/features/movies/presentation/manager/movie_detail_cubit.dart';
 import 'package:movie_app_assessment/features/movies/presentation/widgets/movie_card.dart';
 
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/app_ui_utils.dart';
 import '../../../../core/utils/enums/app_enums.dart';
+import '../../data/models/movie_detail_model.dart';
 
 class WatchScreen extends StatelessWidget {
   const WatchScreen({super.key});
@@ -91,12 +93,17 @@ class WatchScreen extends StatelessWidget {
               ),
               itemBuilder: (context, movie, index) => Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: MovieCard(
-                  title: movie.title,
-                  imageUrl: movie.posterPath,
-                  onTap: () {
-                    context.pushMovieDetail(movie.id);
-                  },
+                child: Hero(
+                  tag: movie.id,
+                  // transitionOnUserGestures: true,
+                  child: MovieCard(
+                    title: movie.title,
+                    imageUrl: movie.posterPath,
+                    onTap: () {
+                      context.pushMovieDetail(movie.id);
+                      context.read<MovieDetailCubit>().setMovieDetail(MovieDetailModel.fromMovieModel(movie));
+                    },
+                  ),
                 ),
               ),
             ),

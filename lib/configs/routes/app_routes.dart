@@ -67,21 +67,14 @@ class AppRouter {
       GoRoute(
           path: AppRoutes.movieDetailPath,
           name: AppRoutes.movieDetail,
-          pageBuilder: (context, state) {
+          builder: (context, state) {
             final movieId = int.tryParse(state.pathParameters['id'] ?? '0') ?? 0;
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: MovieDetailsScreen(movieId: movieId),
-              transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                return ScaleTransition(
-                  scale: Tween<double>(begin: 0.8, end: 1.0).animate(
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-                  ),
-                  child: child,
-                );
-              },
-            );
+            return MovieDetailsScreen(movieId: movieId);
           }),
+      // pageBuilder: (context, state) {
+      //   final movieId = int.tryParse(state.pathParameters['id'] ?? '0') ?? 0;
+      //   return MovieDetailsScreen(movieId: movieId);
+      // }),
 
       // movie watch trailer route
       GoRoute(
