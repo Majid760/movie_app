@@ -44,15 +44,12 @@ class SeatBookingScreen extends StatelessWidget {
             SizedBox(
               height: 6,
             ),
-            Material(
-              color: Colors.transparent,
-              child: Hero(
-                tag: "theater",
-                child: Text(
-                  description,
-                  style: AppTypography.labelMedium.copyWith(
-                    color: AppColors.skyBlue,
-                  ),
+            Hero(
+              tag: "theater",
+              child: Text(
+                description,
+                style: AppTypography.labelMedium.copyWith(
+                  color: AppColors.skyBlue,
                 ),
               ),
             ),

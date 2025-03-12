@@ -13,7 +13,6 @@ import '../../../../core/presentation/widgets/app_button.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_utils.dart';
 import '../../../../core/utils/enums/app_enums.dart';
-import '../../../seat_booking/presentation/pages/seat_booking_screen.dart';
 import '../manager/movie_detail_state.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
@@ -130,11 +129,14 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           // Release Date
                           Hero(
                             tag: "theater",
-                            child: Text(
-                              inTheaters,
+                            child: DefaultTextStyle(
                               style: AppTypography.titleMedium.copyWith(
                                 color: Colors.white,
                               ),
+                              child: Text(inTheaters,
+                                  style: AppTypography.titleMedium.copyWith(
+                                    color: Colors.white,
+                                  )),
                             ),
                           ),
                           SizedBox(height: 16),
@@ -147,17 +149,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 text: AppStrings.getTicket,
                                 padding: EdgeInsets.symmetric(horizontal: 81, vertical: 15),
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return SeatBookingScreen(
-                                          title: movieDetail?.title ?? '',
-                                          description: inTheaters,
-                                        );
-                                      },
-                                    ),
-                                  );
+                                  context.pushGetTicket(movieDetail?.title ?? '', 'inTheaters');
                                 },
                               ),
                               SizedBox(height: 10),

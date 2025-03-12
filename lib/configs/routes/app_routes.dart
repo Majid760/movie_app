@@ -109,6 +109,7 @@ class AppRouter {
       ),
 
       // Get Ticket Route
+
       GoRoute(
         path: AppRoutes.getTicketPath,
         name: AppRoutes.getTicket,
@@ -165,13 +166,7 @@ extension RouterExtension on BuildContext {
     String title,
     String description,
   ) =>
-      GoRouter.of(this).pushNamed(
-        'getTicket',
-        queryParameters: {
-          'movie': title,
-          'description': description,
-        },
-      );
+      GoRouter.of(this).pushNamed('getTicket', pathParameters: {'movie': title, 'description': description});
 }
 
 class AppRoutes {
