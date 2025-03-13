@@ -21,4 +21,6 @@ class AppColors {
 
   // text colors
   static const Color textPrimary = Color(0xFF202C43);
+  static const Color buttonPrimary = Color(0xFF61C3F2);
+  static const Color buttonSecondary = Color(0xFFA6A6A6);
 }

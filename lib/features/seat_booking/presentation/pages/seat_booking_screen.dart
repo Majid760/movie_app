@@ -23,7 +23,7 @@ class SeatBookingScreen extends StatelessWidget {
       backgroundColor: AppColors.mist,
       appBar: AppBar(
         centerTitle: true,
-        toolbarHeight: 76,
+        toolbarHeight: 79,
         backgroundColor: AppColors.white,
         leading: IconButton(
           icon: Icon(
@@ -71,7 +71,7 @@ class SeatBookingScreen extends StatelessWidget {
             ),
             child: Text(
               AppStrings.date,
-              style: AppTypography.titleMedium,
+              style: AppTypography.titleMedium.copyWith(height: 1.25),
             ),
           ),
           SizedBox(
@@ -87,39 +87,7 @@ class SeatBookingScreen extends StatelessWidget {
                 final isSelected = index == 0;
                 return Align(
                   alignment: Alignment.center,
-                  child: DataWidget(index: index, isSelected: isSelected, onTap: () {}),
-
-                  // Container(
-                  //   padding: EdgeInsets.symmetric(
-                  //     horizontal: 16,
-                  //     vertical: 6,
-                  //   ),
-                  //   decoration: BoxDecoration(
-                  //     color: isSelected
-                  //         ? AppColors.skyBlue
-                  //         : AppColors.grey.withValues(
-                  //             alpha: 0.1,
-                  //           ),
-                  //     borderRadius: BorderRadius.circular(
-                  //       10,
-                  //     ),
-                  //     boxShadow: [
-                  //       if (isSelected)
-                  //         BoxShadow(
-                  //           offset: Offset(4, 4),
-                  //           blurRadius: 21,
-                  //           spreadRadius: 0,
-                  //           color: Color(0x23AAEB45),
-                  //         ),
-                  //     ],
-                  //   ),
-                  //   child: Text(
-                  //     "${index + 5} Mar",
-                  //     style: AppTypography.labelLarge.copyWith(
-                  //       color: isSelected ? AppColors.white : AppColors.textPrimary,
-                  //     ),
-                  //   ),
-                  // ),
+                  child: MovieDateChip(index: index, isSelected: isSelected, onTap: () {}),
                 );
               },
             ),
@@ -165,12 +133,12 @@ class SeatBookingScreen extends StatelessWidget {
   }
 }
 
-class DataWidget extends StatelessWidget {
+class MovieDateChip extends StatelessWidget {
   final int index;
   final bool isSelected;
   final VoidCallback? onTap;
 
-  const DataWidget({
+  const MovieDateChip({
     super.key,
     required this.index,
     this.isSelected = false,
@@ -187,35 +155,31 @@ class DataWidget extends StatelessWidget {
           vertical: 6,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF61C3F2) : Colors.grey.withValues(alpha: 0.1),
+          color: isSelected ? AppColors.buttonPrimary : AppColors.buttonSecondary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(1, 1),
-              blurRadius: 10,
-              spreadRadius: 1,
-              color: isSelected ? const Color(0x8061C3F2) : Colors.transparent,
-            ),
-            BoxShadow(
-              offset: const Offset(1, 1),
-              blurRadius: 10,
-              spreadRadius: 1,
-              color: isSelected ? const Color(0x8061C3F2) : Colors.transparent,
-            ),
-            BoxShadow(
-              offset: const Offset(0, 1),
-              blurRadius: 10,
-              spreadRadius: 1,
-              color: isSelected ? const Color(0x8061C3F2) : Colors.transparent,
-            ),
-          ],
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Color(0x4523AAEB).withValues(alpha: 0.27),
+                    offset: Offset(0, 0),
+                    blurRadius: 21,
+                  ),
+                ]
+              : [],
         ),
-        child: Text(
-          "${index + 5} Mar",
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+        child: Chip(
+          label: Text('$index Mar',
+              style: isSelected
+                  ? AppTypography.labelMedium.copyWith(fontWeight: FontWeight.w600)
+                  : AppTypography.labelMedium.copyWith(color: AppColors.black, fontWeight: FontWeight.w600)),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: isSelected ? AppColors.buttonPrimary : AppColors.buttonSecondary.withValues(alpha: 0.1),
+          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: BorderSide(color: Colors.transparent),
           ),
         ),
       ),
