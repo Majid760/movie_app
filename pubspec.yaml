@@ -49,6 +49,9 @@ dependencies:
   cached_network_image: ^3.4.1
   infinite_scroll_pagination: ^4.1.0
   youtube_player_flutter: ^9.1.1
+  seatsio: ^0.4.0
+
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -81,6 +84,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/icons/svg/
+    - assets/svgs/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -3,11 +3,12 @@ import 'package:movie_app_assessment/core/presentation/widgets/app_button.dart';
 import 'package:movie_app_assessment/core/theme/app_colors.dart';
 import 'package:movie_app_assessment/core/theme/app_typography.dart';
 import 'package:movie_app_assessment/features/seat_booking/presentation/pages/booking_payment_screen.dart';
-import 'package:movie_app_assessment/features/seat_booking/presentation/widgets/movie_hall.dart';
 
 import '../../../../core/utils/app_strings.dart';
+import '../../data/models/movie_model.dart';
+import '../widgets/movie_hall_view.dart';
 
-class SeatBookingScreen extends StatelessWidget {
+class SeatBookingScreen extends StatefulWidget {
   const SeatBookingScreen({
     super.key,
     required this.title,
@@ -18,6 +19,29 @@ class SeatBookingScreen extends StatelessWidget {
   final String description;
 
   @override
+  State<SeatBookingScreen> createState() => _SeatBookingScreenState();
+}
+
+class _SeatBookingScreenState extends State<SeatBookingScreen> {
+  late int selectedDate;
+  late HallMovieModel movieTime;
+  int hallIndex = 0;
+  int timeIndex = 0;
+
+  @override
+  void initState() {
+    selectedDate = 0;
+    movieTime = HallMovieModel.seed();
+    super.initState();
+  }
+
+  setHallIndex(int index) {
+    setState(() {
+      hallIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.mist,
@@ -25,20 +49,24 @@ class SeatBookingScreen extends StatelessWidget {
         centerTitle: true,
         toolbarHeight: 79,
         backgroundColor: AppColors.white,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_rounded,
-            color: AppColors.black,
+        leading: Transform.translate(
+          offset: Offset(0, -8),
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios_rounded,
+              color: AppColors.black,
+            ),
+            onPressed: () => Navigator.pop(context),
           ),
-          onPressed: () => Navigator.pop(context),
         ),
-        title: Column(
+        flexibleSpace: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 15,
+              height: 67,
             ),
             Text(
-              title,
+              widget.title,
               style: AppTypography.titleMedium,
             ),
             SizedBox(
@@ -47,7 +75,7 @@ class SeatBookingScreen extends StatelessWidget {
             Hero(
               tag: "theater",
               child: Text(
-                description,
+                widget.description,
                 style: AppTypography.labelMedium.copyWith(
                   color: AppColors.skyBlue,
                 ),
@@ -84,28 +112,32 @@ class SeatBookingScreen extends StatelessWidget {
                 width: 12,
               ),
               itemBuilder: (context, index) {
-                final isSelected = index == 0;
                 return Align(
                   alignment: Alignment.center,
-                  child: MovieDateChip(index: index, isSelected: isSelected, onTap: () {}),
+                  child: MovieDateChip(
+                      index: index + 5,
+                      isSelected: selectedDate == index,
+                      onTap: () => setState(() => selectedDate = index)),
                 );
               },
             ),
           ),
           SizedBox(
-            height: 244,
-            child: ListView.separated(
-              itemCount: 10,
-              padding: EdgeInsets.all(20),
+            height: 200,
+            child: ListView.builder(
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              separatorBuilder: (_, __) => SizedBox(
-                width: 10,
-              ),
-              itemBuilder: (context, _) {
-                return MovieHall();
+              itemCount: movieTime.cinemaHallRooms.length,
+              itemBuilder: (context, index) {
+                final room = movieTime.cinemaHallRooms[index];
+                return GestureDetector(
+                  onTap: () => setHallIndex(index),
+                  child: RoomItem(isActive: index == hallIndex, room: room),
+                );
               },
             ),
-          )
+          ),
+          SizedBox(height: 30),
         ],
       ),
       bottomNavigationBar: Padding(
@@ -120,8 +152,8 @@ class SeatBookingScreen extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) {
                   return BookingPaymentScreen(
-                    title: title,
-                    description: description,
+                    title: widget.title,
+                    description: widget.description,
                   );
                 },
               ),
