@@ -5,6 +5,7 @@ import 'package:movie_app_assessment/core/utils/app_path.dart';
 import 'package:movie_app_assessment/features/seat_booking/presentation/widgets/seat_type_widget.dart';
 
 import '../../../../core/presentation/widgets/app_button.dart';
+import '../../../../core/presentation/widgets/custom_snackbar.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/enums/app_enums.dart';
 import '../../data/models/layout_model.dart';
@@ -101,15 +102,12 @@ class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
                     child: SizedBox(
                       child: SeatLayoutWidget(
                         onSeatStateChanged: (rowI, colI, seatState) {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: seatState == SeatState.selected
-                                  ? Text("Selected Seat[$rowI][$colI]")
-                                  : Text(
-                                      "De-selected Seat[$rowI][$colI]",
-                                    ),
-                            ),
+                          AppSnackBar.show(
+                            context: context,
+                            type: SnackBarType.info,
+                            message: seatState == SeatState.selected
+                                ? "Selected Seat[$rowI][$colI]"
+                                : "De-selected Seat[$rowI][$colI]",
                           );
                           if (seatState == SeatState.selected) {
                             selectedSeats.add(SeatNumber(rowI: rowI, colI: colI));
