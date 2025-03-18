@@ -6,9 +6,13 @@ import 'package:movie_app_assessment/features/seat_booking/presentation/widgets/
 
 import '../../../../core/presentation/widgets/app_button.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/enums/app_enums.dart';
+import '../../data/models/layout_model.dart';
+import '../../data/models/number_model.dart';
 import '../widgets/round_button.dart';
+import '../widgets/seat_builder.dart';
 
-class BookingPaymentScreen extends StatelessWidget {
+class BookingPaymentScreen extends StatefulWidget {
   const BookingPaymentScreen({
     super.key,
     required this.title,
@@ -17,6 +21,13 @@ class BookingPaymentScreen extends StatelessWidget {
 
   final String title;
   final String description;
+
+  @override
+  State<BookingPaymentScreen> createState() => _BookingPaymentScreenState();
+}
+
+class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
+  Set<SeatNumber> selectedSeats = {};
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +50,7 @@ class BookingPaymentScreen extends StatelessWidget {
               height: 15,
             ),
             Text(
-              title,
+              widget.title,
               style: AppTypography.titleMedium,
             ),
             SizedBox(
@@ -48,7 +59,7 @@ class BookingPaymentScreen extends StatelessWidget {
             Hero(
               tag: "theater",
               child: Text(
-                description,
+                widget.description,
                 style: AppTypography.labelMedium.copyWith(
                   color: AppColors.skyBlue,
                 ),
@@ -62,21 +73,411 @@ class BookingPaymentScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               color: AppColors.mist,
               width: double.infinity,
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.fromLTRB(
-                5,
-                60,
-                23,
-                7,
-              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    AppAssets.seatMapWide,
+                  SizedBox(height: 60),
+
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      AppSvgWidget.screenShape,
+                      Text(
+                        AppStrings.screen,
+                        style: AppTypography.labelMedium.copyWith(color: AppColors.gray, height: 1.6, fontSize: 8),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+
+                  // seat view of the cinema hall
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      child: SeatLayoutWidget(
+                        onSeatStateChanged: (rowI, colI, seatState) {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: seatState == SeatState.selected
+                                  ? Text("Selected Seat[$rowI][$colI]")
+                                  : Text(
+                                      "De-selected Seat[$rowI][$colI]",
+                                    ),
+                            ),
+                          );
+                          if (seatState == SeatState.selected) {
+                            selectedSeats.add(SeatNumber(rowI: rowI, colI: colI));
+                          } else {
+                            selectedSeats.remove(SeatNumber(rowI: rowI, colI: colI));
+                          }
+                        },
+                        stateModel: SeatLayoutStateModel(
+                            pathDisabledSeat: AppAssets.seatDisabled,
+                            pathSelectedSeat: AppAssets.seatSelect,
+                            pathSoldSeat: AppAssets.seatBooked,
+                            pathUnSelectedSeat: AppAssets.seatUnselected,
+                            rows: 10,
+                            cols: 23,
+                            seatSvgSize: 15,
+                            currentSeatsState: [
+                              [
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.disabled,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.disabled,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                              ],
+                              [
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.sold,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.unselected,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                                SeatState.empty,
+                              ],
+                            ]),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 16,
                   ),
                   SizedBox(height: 135),
                   Row(
@@ -91,26 +492,27 @@ class BookingPaymentScreen extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 14),
-                  Container(
-                    height: 5,
-                    margin: EdgeInsets.only(
-                      left: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        100,
-                      ),
-                      color: AppColors.textPrimary.withValues(
-                        alpha: 0.3,
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   height: 5,
+                  //   margin: EdgeInsets.only(
+                  //     left: 16,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(
+                  //       100,
+                  //     ),
+                  //     color: AppColors.textPrimary.withValues(
+                  //       alpha: 0.3,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
             SizedBox(
               height: 26,
             ),
+            // seat type section
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 21,
@@ -119,16 +521,14 @@ class BookingPaymentScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SeatTypeWidget(
-                      color: AppColors.gold,
                       label: AppStrings.selected,
+                      assetPath: AppAssets.seatSelect,
                     ),
                   ),
                   Expanded(
                     child: SeatTypeWidget(
                       label: AppStrings.notAvailable,
-                      color: AppColors.grey.withValues(
-                        alpha: 0.7,
-                      ),
+                      assetPath: AppAssets.seatBooked,
                     ),
                   ),
                 ],
@@ -145,19 +545,20 @@ class BookingPaymentScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SeatTypeWidget(
-                      color: AppColors.purple,
                       label: AppStrings.vip,
+                      assetPath: AppAssets.seatDisabled,
                     ),
                   ),
                   Expanded(
                     child: SeatTypeWidget(
                       label: AppStrings.regular,
-                      color: AppColors.skyBlue,
+                      assetPath: AppAssets.seatUnselected,
                     ),
                   ),
                 ],
               ),
             ),
+            // seat selection section
             Align(
               alignment: Alignment.centerLeft,
               child: Container(

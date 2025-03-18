@@ -34,12 +34,13 @@ class AppAssets {
   // svg
   static const String backIcon = "assets/icons/back_icon.svg";
   static const String cinemaPreview = "assets/svgs/cinema_preview.svg";
+  static const String screenPreview = "assets/svgs/screen_shape.svg";
   static const String close = "assets/svgs/close.svg";
   static const String find = "assets/svgs/find.svg";
   static const String seatBooked = "assets/svgs/seat_booked.svg";
   static const String seatDisabled = "assets/svgs/seat_disabled.svg";
   static const String seatSelect = "assets/svgs/seat_select.svg";
-  static const String seatUnselected = "assets/svgs/seat_unselect.svg";
+  static const String seatUnselected = "assets/svgs/seat_unselected.svg";
 
   // Fonts
   static const String poppins = "Poppins";
@@ -83,7 +84,6 @@ class AppSvgWidget {
   );
   static SvgWidget seatIcon = const SvgWidget(
     assetPath: AppAssets.seat,
-    color: ColorFilter.mode(AppColors.ashLavender, BlendMode.srcIn),
   );
 
   // booking seat_view
@@ -92,6 +92,11 @@ class AppSvgWidget {
     // color: ColorFilter.mode(AppColors.ashLavender, BlendMode.srcIn),
     height: 113,
     width: 144,
+  );
+  static SvgWidget screenShape = const SvgWidget(
+    assetPath: AppAssets.screenPreview,
+    // color: ColorFilter.mode(AppColors.ashLavender, BlendMode.srcIn),
+    height: 36, width: 327,
   );
 }
 

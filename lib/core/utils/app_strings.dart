@@ -38,4 +38,6 @@ class AppStrings {
   static const String errorLoadingMoreMovie = 'Error loading more movies';
   // text field hint
   static const String searchHint = 'TV shows, movies and more';
+  // seat booking
+  static const String screen = 'Screen';
 }

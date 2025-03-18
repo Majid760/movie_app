@@ -7,22 +7,21 @@ import '../../../../core/utils/app_path.dart';
 class SeatTypeWidget extends StatelessWidget {
   const SeatTypeWidget({
     super.key,
-    required this.color,
     required this.label,
+    this.assetPath,
   });
-
-  final Color color;
   final String label;
+
+  final String? assetPath;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         AppSvgWidget.seatIcon.copyWith(
-          color: ColorFilter.mode(
-            color,
-            BlendMode.srcIn,
-          ),
+          assetPath: assetPath ?? AppAssets.seat,
+          height: 17.76,
+          width: 20.01,
         ),
         const SizedBox(
           width: 12,
