@@ -606,6 +606,7 @@ class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8.0, top: 8),
                       child: AnimatedChip(
+                        key: Key('${seat.colI}+${seat.rowI}'),
                         label: SeatRichText(
                           row: seat.rowI,
                           column: seat.colI,
