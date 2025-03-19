@@ -517,11 +517,11 @@ class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
                     children: [
                       RoundButton(
                         icon: Icons.add,
-                        onPressed: _zoomOut,
+                        onPressed: _zoomIn,
                       ),
                       RoundButton(
                         icon: Icons.remove,
-                        onPressed: _zoomIn,
+                        onPressed: _zoomOut,
                       ),
                     ],
                   ),
@@ -593,18 +593,34 @@ class _BookingPaymentScreenState extends State<BookingPaymentScreen> {
               ),
             ),
             // seat selection section
-            Wrap(
-              direction: Axis.horizontal,
-              children: selectedSeats
-                  .map((SeatNumber seat) => AnimatedChip(
+
+            SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 24),
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  spacing: 0,
+                  runSpacing: 1,
+                  children: selectedSeats.map((SeatNumber seat) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0, top: 8),
+                      child: AnimatedChip(
                         label: SeatRichText(
                           row: seat.rowI,
                           column: seat.colI,
                         ),
-                        onRemove: () {},
+                        onRemove: () {
+                          setState(() {
+                            selectedSeats.remove(SeatNumber(rowI: seat.rowI, colI: seat.colI));
+                          });
+                        },
                         isVisible: true,
-                      ))
-                  .toList(),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             )
           ],
         ),

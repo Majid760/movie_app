@@ -74,36 +74,32 @@ class _AnimatedChipState extends State<AnimatedChip> with SingleTickerProviderSt
       builder: (context, child) {
         return Opacity(
           opacity: _opacityAnimation.value,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppColors.grey.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  widget.label,
-                  const SizedBox(width: 22),
-                  GestureDetector(
-                    onTap: () {
-                      _controller.reverse().then((_) {
-                        if (mounted) {
-                          widget.onRemove();
-                        }
-                      });
-                    },
-                    child: Icon(
-                      Icons.clear,
-                      size: 20,
-                      color: AppColors.textPrimary,
-                    ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.grey.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                widget.label,
+                const SizedBox(width: 13),
+                GestureDetector(
+                  onTap: () {
+                    _controller.reverse().then((_) {
+                      if (mounted) {
+                        widget.onRemove();
+                      }
+                    });
+                  },
+                  child: Icon(
+                    Icons.clear,
+                    size: 20,
+                    color: AppColors.textPrimary,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
