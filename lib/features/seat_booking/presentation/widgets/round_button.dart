@@ -6,14 +6,16 @@ class RoundButton extends StatelessWidget {
   const RoundButton({
     super.key,
     required this.icon,
+    this.onPressed,
   });
 
   final IconData icon;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Container(
         padding: EdgeInsets.all(9),
         decoration: BoxDecoration(
