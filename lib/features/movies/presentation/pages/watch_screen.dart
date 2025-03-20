@@ -121,11 +121,17 @@ class _SmoothEntranceMovieCardState extends State<SmoothEntranceMovieCard> with 
     );
 
     // Longer stagger delay
-    Future.delayed(Duration(milliseconds: 150 * widget.index), () {
-      if (mounted) {
-        _controller.forward();
-      }
-    });
+    // Only animate the first 5 items
+    if (widget.index < 5) {
+      Future.delayed(Duration(milliseconds: 150 * widget.index), () {
+        if (mounted) {
+          _controller.forward();
+        }
+      });
+    } else {
+      // For items beyond the first 5, start at the end state
+      _controller.value = 1.0;
+    }
 
     // Smoother curves instead of bouncy ones
     _slideAnimation = CurvedAnimation(
