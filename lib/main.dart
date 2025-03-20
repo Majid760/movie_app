@@ -68,8 +68,10 @@ class AppBottomNavigationBar extends StatefulWidget {
   State<AppBottomNavigationBar> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<AppBottomNavigationBar> {
+class _HomeScreenState extends State<AppBottomNavigationBar> with SingleTickerProviderStateMixin {
   int _tabIndex = 1;
+  late AnimationController _animationController;
+  late Animation<Offset> _slideAnimation;
 
   void _onTabTapped(int index) {
     setState(() {
@@ -85,33 +87,65 @@ class _HomeScreenState extends State<AppBottomNavigationBar> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000), // Slightly longer for smoother animation
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1), // Start from below the screen
+      end: Offset.zero, // End at original position
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic, // Smooth easing curve
+    ));
+
+    // Start the navbar slide animation when widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _animationController.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: AppNavBar(
-        currentIndex: _tabIndex,
-        onTap: _onTabTapped,
-        navbarItems: [
-          AppNavBarItem(
-            navbarIcon: AppSvgWidget.dashboardIcon,
-            active: AppSvgWidget.dashboardIcon.copyWith(color: ColorFilter.mode(Colors.white, BlendMode.srcIn)),
-            label: "Dashboard",
-          ),
-          AppNavBarItem(
-            navbarIcon: AppSvgWidget.watchIcon,
-            label: "Watch",
-            active: AppSvgWidget.watchIcon.copyWith(color: ColorFilter.mode(Colors.white, BlendMode.srcIn)),
-          ),
-          AppNavBarItem(
-            navbarIcon: AppSvgWidget.mediaLabIcon,
-            active: AppSvgWidget.mediaLabIcon.copyWith(color: ColorFilter.mode(Colors.white, BlendMode.srcIn)),
-            label: "Media Library",
-          ),
-          AppNavBarItem(
-            navbarIcon: AppSvgWidget.moreIcon,
-            active: AppSvgWidget.moreIcon.copyWith(color: ColorFilter.mode(Colors.white, BlendMode.srcIn)),
-            label: "More",
-          ),
-        ],
+      bottomNavigationBar: SlideTransition(
+        position: _slideAnimation,
+        child: AppNavBar(
+          currentIndex: _tabIndex,
+          onTap: _onTabTapped,
+          navbarItems: [
+            AppNavBarItem(
+              navbarIcon: AppSvgWidget.dashboardIcon,
+              active: AppSvgWidget.dashboardIcon, // Use your actual active icon here
+              label: "Dashboard",
+            ),
+            AppNavBarItem(
+              navbarIcon: AppSvgWidget.watchIcon,
+              label: "Watch",
+              active: AppSvgWidget.watchIcon, // Use your actual active icon here
+            ),
+            AppNavBarItem(
+              navbarIcon: AppSvgWidget.mediaLabIcon,
+              active: AppSvgWidget.mediaLabIcon, // Use your actual active icon here
+              label: "Media Library",
+            ),
+            AppNavBarItem(
+              navbarIcon: AppSvgWidget.moreIcon,
+              active: AppSvgWidget.moreIcon, // Use your actual active icon here
+              label: "More",
+            ),
+          ],
+        ),
       ),
       body: IndexedStack(
         index: _tabIndex,
