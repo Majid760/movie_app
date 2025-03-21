@@ -50,6 +50,7 @@ dependencies:
   infinite_scroll_pagination: ^4.1.0
   youtube_player_flutter: ^9.1.1
   seatsio: ^0.4.0
+  connectivity_plus: ^6.1.3
 
 
 

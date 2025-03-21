@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
@@ -9,6 +10,7 @@ import '../../features/movies/domain/use_cases/fetch_upcoming_movies_usecase.dar
 import '../../features/search/domain/use_cases/fetch_search_movie_usecase.dart';
 import '../network/network_client.dart';
 import '../network/network_client_service.dart';
+import '../services/network_service.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -27,6 +29,9 @@ class ServicesLocator {
       sl.registerLazySingleton<BaseClientService>(
         () => BaseClientService(dio: NetworkClient().createDioClient()),
       );
+
+      // connectivity service
+      sl.registerLazySingleton<NetworkService>(() => NetworkService(Connectivity()));
 
       await sl.allReady();
 
