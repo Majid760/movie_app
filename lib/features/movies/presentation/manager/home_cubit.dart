@@ -47,6 +47,7 @@ class HomeCubit extends Cubit<HomeState> {
           _pagingController.appendPage(movies, page + 1);
         }
       }
+      emit(state.copyWith(status: HomeStates.loaded));
     } catch (e) {
       emit(state.copyWith(
         status: HomeStates.error,

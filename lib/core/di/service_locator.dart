@@ -23,17 +23,15 @@ class ServicesLocator {
   static ServicesLocator get shared => _shared;
   Future<void> init() async {
     WidgetsFlutterBinding.ensureInitialized();
-    // FlutterNativeSplash.preserve(widgetsBinding: bindings);
-
     try {
       // base-client (dio)
       sl.registerLazySingleton<BaseClientService>(
         () => BaseClientService(dio: NetworkClient().createDioClient()),
       );
-
       // connectivity service
-      sl.registerLazySingleton<NetworkService>(() => NetworkService(Connectivity()));
-
+      final networkService = NetworkService(Connectivity());
+      await networkService.initConnectivityListener();
+      sl.registerLazySingleton<NetworkService>(() => networkService);
       // ✅ Register AppLocalDataSourceImp
       // Register Local Data Source (Ensure Hive is initialized)
       final localDataSource = AppLocalDataSourceImpl();

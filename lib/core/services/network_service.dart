@@ -15,12 +15,9 @@ class NetworkService implements NetworkInfo {
   final _connectionStatusController = StreamController<bool>.broadcast();
   bool _hasConnection = false;
 
-  NetworkService(this._connectivity) {
-    // Start listening to connectivity changes when created
-    _initConnectivityListener();
-  }
+  NetworkService(this._connectivity);
 
-  void _initConnectivityListener() {
+  Future<void> initConnectivityListener() async {
     _connectivity.onConnectivityChanged.listen((connectivityResults) async {
       _hasConnection = await _checkRealConnection(connectivityResults);
       _connectionStatusController.add(_hasConnection);
