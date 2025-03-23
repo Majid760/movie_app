@@ -10,9 +10,8 @@ import '../models/movie_detail_model.dart';
 import '../models/movie_model.dart';
 import '../models/movies_model.dart';
 
-abstract class AppDataSource {
+abstract class AppRemoteDataSource {
   Future<MoviesEntity> getUpComingMovies(int page);
-
   Future<MovieDetailEntity> getMovieById(int id);
 
   Future<MovieDetailEntity> getMoviesCategory();
@@ -24,7 +23,7 @@ abstract class AppDataSource {
   Future<String> getMovieTrailer(int id);
 }
 
-class AppRemoteDataSourceImp extends AppDataSource {
+class AppRemoteDataSourceImp extends AppRemoteDataSource {
   final BaseClientService clientService;
 
   AppRemoteDataSourceImp({required this.clientService});

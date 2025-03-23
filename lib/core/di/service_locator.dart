@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:movie_app_assessment/features/movies/data/data_sources/local_source.dart';
 
 import '../../features/movies/data/data_sources/remote_source.dart';
 import '../../features/movies/data/repositories/movie_repository_imp.dart';
@@ -33,6 +34,12 @@ class ServicesLocator {
       // connectivity service
       sl.registerLazySingleton<NetworkService>(() => NetworkService(Connectivity()));
 
+      // ✅ Register AppLocalDataSourceImp
+      // Register Local Data Source (Ensure Hive is initialized)
+      final localDataSource = AppLocalDataSourceImpl();
+      await localDataSource.init();
+      sl.registerLazySingleton<AppLocalDataSource>(() => localDataSource);
+
       await sl.allReady();
 
       // ✅ Register AppRemoteDataSourceImp
@@ -42,7 +49,8 @@ class ServicesLocator {
 
       // ✅ Register MovieRepositoryImp
       sl.registerLazySingleton<MovieRepositoryImp>(
-        () => MovieRepositoryImp(dataSource: sl<AppRemoteDataSourceImp>()),
+        () => MovieRepositoryImp(
+            remoteDataSource: sl<AppRemoteDataSourceImp>(), localDataSource: sl<AppLocalDataSource>()),
       );
 
       // ✅ Register Use Cases
