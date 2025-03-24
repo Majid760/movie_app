@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:movie_app_assessment/features/movies/data/data_sources/local_source.dart';
 
@@ -22,7 +23,8 @@ class ServicesLocator {
 
   static ServicesLocator get shared => _shared;
   Future<void> init() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    final bindings = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: bindings);
     try {
       // base-client (dio)
       sl.registerLazySingleton<BaseClientService>(

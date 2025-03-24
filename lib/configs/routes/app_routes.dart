@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:movie_app_assessment/features/movies/presentation/manager/home_cubit.dart';
 import 'package:movie_app_assessment/features/movies/presentation/pages/category_screen.dart';
@@ -16,11 +17,13 @@ class AppRouter {
   static final router = GoRouter(
     initialLocation: AppRoutes.watchPath,
     // debugLogDiagnostics: true,
+
     routes: [
       ShellRoute(
         // support multiple navigation stacks
         builder: (context, state, child) {
           // return AppNavbar(child: child);
+          FlutterNativeSplash.remove();
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (context) => HomeCubit(), lazy: false),
